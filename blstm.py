@@ -29,6 +29,9 @@ Parameters, as from the VulDeePecker paper:
 """
 class BLSTM:
     def __init__(self, data, name="", batch_size=64):
+        # bug fix, ref: https://github.com/johnb110/VDPython/issues/1#issuecomment-619315204
+        # vectors = np.stack(data.iloc[:, 1].values)
+        # labels = data.iloc[:, 0].values
         vectors = np.stack(data.iloc[:, 0].values)
         labels = data.iloc[:, 1].values
         positive_idxs = np.where(labels == 1)[0]
@@ -63,7 +66,10 @@ class BLSTM:
     Trains model based on training data
     """
     def train(self):
-        self.model.fit(self.X_train, self.y_train, batch_size=self.batch_size, epochs=4, class_weight=self.class_weight)
+        # bug fix, ref: https://github.com/johnb110/VDPython/issues/1#issuecomment-664394848
+        # self.model.fit(self.X_train, self.y_train, batch_size=self.batch_size, epochs=4, class_weight=self.class_weight)
+        self.model.fit(self.X_train, self.y_train, batch_size=self.batch_size, epochs=4,
+                       class_weight=dict(enumerate(self.class_weight)))
         self.model.save_weights(self.name + "_model.h5")
 
     """
