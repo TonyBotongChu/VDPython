@@ -2,7 +2,7 @@ from __future__ import print_function
 
 import warnings
 
-from keras.utils import to_categorical
+from tensorflow.keras.utils import to_categorical
 from sklearn import metrics
 from sklearn.metrics import confusion_matrix
 from sklearn.utils import compute_class_weight
@@ -11,9 +11,9 @@ warnings.filterwarnings("ignore")
 
 import numpy as np
 
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, LSTM, Bidirectional, LeakyReLU
-from keras.optimizers import Adamax
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, LSTM, Bidirectional, LeakyReLU
+from tensorflow.keras.optimizers import Adamax
 
 from sklearn.model_selection import train_test_split
 
@@ -29,8 +29,8 @@ Parameters, as from the VulDeePecker paper:
 """
 class BLSTM:
     def __init__(self, data, name="", batch_size=64):
-        vectors = np.stack(data.iloc[:, 1].values)
-        labels = data.iloc[:, 0].values
+        vectors = np.stack(data.iloc[:, 0].values)
+        labels = data.iloc[:, 1].values
         positive_idxs = np.where(labels == 1)[0]
         negative_idxs = np.where(labels == 0)[0]
         undersampled_negative_idxs = np.random.choice(negative_idxs, len(positive_idxs), replace=False)
